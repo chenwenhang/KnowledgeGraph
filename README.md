@@ -16,4 +16,6 @@ KnowledgeGraph
   * Splider：网络爬虫
   * kgmilitary (building...)：网站，可视化知识图谱
 
+## 声明
+本项目所使用的一切数据均为网络上的**公开内容，不涉及军事机密**。
 
