@@ -4,10 +4,8 @@ import csv
 # from fake_useragent import UserAgent
 
 session = HTMLSession()
-# root_url = 'http://weapon.huanqiu.com/weaponlist/aircraft'
-root_url = 'http://weapon.huanqiu.com/weaponlist/spaceship'
-# path = "data/plane.csv"
-path = "data/spaceship.csv"
+root_url = 'http://weapon.huanqiu.com/weaponlist/warship'
+path = "data/warship.csv"
 
 USER_AGENTS = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20",
