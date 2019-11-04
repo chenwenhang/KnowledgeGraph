@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+
+from . import index_view
+from . import ner_view
+from . import relation_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^$', index_view.index),
+    url(r'^ner-post',ner_view.ner_post),
+    url(r'^search_entity', relation_view.search_entity),
+    url(r'^search_relation',relation_view.search_relation),
 ]
