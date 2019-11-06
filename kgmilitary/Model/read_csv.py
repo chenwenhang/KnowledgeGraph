@@ -2,7 +2,8 @@
 import csv
 
 
-def readCSV(filename):  ##读取csv的二维数组，第一行是列名
+# 读取csv的二维数组，第一行是列名
+def readCSV(filename):
     List = []
     with open(filename, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
@@ -11,7 +12,8 @@ def readCSV(filename):  ##读取csv的二维数组，第一行是列名
     return List
 
 
-def readCSV2(filename):  ##读取csv的二维数组，第一行是列名(空格分割)
+# 读取csv的二维数组，第一行是列名(空格分割)
+def readCSV2(filename):
     List = []
     with open(filename, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ')
@@ -20,7 +22,8 @@ def readCSV2(filename):  ##读取csv的二维数组，第一行是列名(空格�
     return List
 
 
-def readCSVbyColumn(filename, columnname):  ##读取csv列名对应列，不包括列名
+# 读取csv列名对应列，不包括列名
+def readCSVbyColumn(filename, columnname):
     List = []
     with open(filename, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
