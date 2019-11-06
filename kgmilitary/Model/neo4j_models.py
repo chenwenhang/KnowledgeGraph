@@ -11,7 +11,7 @@ class Neo4j_Handle():
         print("Neo4j Init ...")
 
     def connectDB(self):
-        self.graph = Graph("bolt: // localhost:7687", username="neo4j", password="cwhwy2015gkjy!")
+        self.graph = Graph("bolt: // localhost:7687", username="neo4j", password="test123456!")
         self.matcher = NodeMatcher(self.graph)
 
     # 实体查询，用于命名实体识别
