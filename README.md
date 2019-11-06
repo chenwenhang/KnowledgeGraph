@@ -19,10 +19,10 @@ KnowledgeGraph
 ## 系统截图
 
 #### 实体识别
-![实体识别](./recognize_entity.png )
+![实体识别.png](https://s2.ax1x.com/2019/11/06/MPiLLR.png)
 
 #### 实体查询
-![实体查询](./query_entity.png )
+![实体查询](https://s2.ax1x.com/2019/11/06/MPibQJ.png)
 
 ## 声明
 本项目所使用的一切数据均为网络上的**公开内容，不涉及军事机密**。
