@@ -130,7 +130,6 @@
         //echarts 数据
         var data = [];
         var links = [];
-        console.log(searchResult)
         //构造展示的数据
         var maxDisPlayNode = 25;
         var id = 0;
@@ -139,14 +138,8 @@
             node1 = {};
             node1['name'] = searchResult[i]['n1']['名称'];
             node1['draggable'] = true;
-
-            if ('url' in searchResult[i]['n1']) {
-                node1['category'] = 1;
-            } else {
-                node1['category'] = 2;
-            }
+            node1['category'] = 2;
             var flag = 1;
-
             relationTarget = id.toString();
             for (var j = 0; j < data.length; j++) {
                 if (data[j]['name'] === node1['name']) {
@@ -155,7 +148,6 @@
                     break;
                 }
             }
-
             node1['id'] = relationTarget;
             if (flag === 1) {
                 id++;
@@ -166,11 +158,7 @@
             node2 = {};
             node2['name'] = searchResult[i]['n2']['名称'];
             node2['draggable'] = true;
-            if ('url' in searchResult[i]['n2']) {
-                node2['category'] = 1;
-            } else {
-                node2['category'] = 2;
-            }
+            node2['category'] = 2;
             flag = 1;
             relationTarget = id.toString();
             for (var j = 0; j < data.length; j++) {
