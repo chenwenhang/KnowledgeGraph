@@ -60,7 +60,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default ">
                         <header class="panel-heading">
-                            关系图 :
+                            属性图 :
                         </header>
                         <div class="panel-body ">
                             <div id="graph" style="width: 100%;height:600px;"></div>
@@ -72,7 +72,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <header class="panel-heading">
-                            关系列表 :
+                            属性列表 :
                         </header>
                         <div class="panel-body">
                             <table class="table" data-paging="true" data-sorting="true"></table>
@@ -87,8 +87,8 @@
         <script type="text/javascript">
             // 基于查询结果：初始化Data和Links列表，用于Echarts可视化输出
             var ctx = [{{ ctx|safe }}];
-            //{entity2,rel}
             var entityRelation = [{{ entityRelation|safe }}];
+            var entity = entityRelation[0][0].entity1;
             var data = [];
             var links = [];
             if (ctx.length == 0) {
@@ -103,71 +103,47 @@
                 node['draggable'] = true;
                 var id = 0;
                 node['id'] = id.toString();
+                node['category'] = 1;
                 data.push(node);
 
                 //实体2：查询并转储到data中，取二者较小的值
                 var maxDisPlayNode = 25;
-                for (var i = 0; i < Math.min(maxDisPlayNode, entityRelation[0].length); i++) {
+                var id = 1;
+                Object.keys(entity).forEach(function(key){
+                    // console.log(key,entity[key]);
                     node = {};
-                    node['name'] = entityRelation[0][i]['entity2']['名称'];
+                    node['name'] = entity[key];
                     node['draggable'] = true;   //是否允许拖拽
-                    //是否URL：区分类型
-                    if ('url' in entityRelation[0][i]['entity2']) {
-                        node['category'] = 1;
-                    } else {
-                        node['category'] = 2;
-                    }
-                    id = i + 1;
+                    node['category'] = 2;
                     node['id'] = id.toString();
-                    var flag = 1;
-                    relationTarget = id.toString();
-                    for (var j = 0; j < data.length; j++) {
-                        if (data[j]['name'] === node['name']) {
-                            flag = 0;
-                            relationTarget = data[j]['id'];
-                            break;
-                        }
-                    }
+                    data.push(node);
                     relation = {};
                     relation['source'] = 0;
-                    relation['target'] = relationTarget;
+                    relation['target'] = id.toString();
                     relation['category'] = 0;
-
-                    if (flag === 1) {
-                        data.push(node);
-                        relation['value'] = entityRelation[0][i]['rel']['名称'];
-                        relation['symbolSize'] = 10;
-                        links.push(relation);
-                    } else {
-                        maxDisPlayNode += 1;
-                        for (var j = 0; j < links.length; j++) {
-                            if (links[j]['target'] === relationTarget) {
-                                links[j]['value'] = links[j]['value'] + " | " + entityRelation[0][i]['rel']['名称']
-                                break;
-                            }
-                        }
-
-                    }
-                }
+                    relation['value'] = key;
+                    relation['symbolSize'] = 10;
+                    links.push(relation);
+                    id++;
+                });
                 //基于表格的展示++
-                tableData = []
-                for (var i = 0; i < entityRelation[0].length; i++) {
+                tableData = [];
+                Object.keys(entity).forEach(function(key){
                     relationData = {};
                     relationData['entity1'] = str;
-                    relationData['relation'] = entityRelation[0][i]['rel']['名称'];
-                    relationData['entity2'] = entityRelation[0][i]['entity2']['名称'];
+                    relationData['relation'] = key;
+                    relationData['entity2'] = entity[key];
                     tableData.push(relationData);
-                }
+                });
                 jQuery(function () {
                     $('.table').footable({
-                        "columns": [{"name": "entity1", title: "实体1"},
-                            {"name": "relation", title: "关系"},
-                            {"name": "entity2", title: "实体2"}],
+                        "columns": [{"name": "entity1", title: "实体"},
+                            {"name": "relation", title: "属性"},
+                            {"name": "entity2", title: "值"}],
                         "rows": tableData
                     });
                 });
                 //基于表格的展示--
-
             }
             // 基于准备好的数据：Data和Links，设置Echarts参数
             var myChart = echarts.init(document.getElementById('graph'));
@@ -176,6 +152,7 @@
                     text: ''
                 },//标题
                 tooltip: {},//提示框配置
+                animation: false,
                 animationDurationUpdate: 1500,
                 animationEasingUpdate: 'quinticInOut',
                 label: {
@@ -202,14 +179,14 @@
                             name: 'Bank',
                             itemStyle: {
                                 normal: {
-                                    color: "#009800",
+                                    color: "#C71585",
                                 }
                             }
                         }, {
                             name: 'Serise',
                             itemStyle: {
                                 normal: {
-                                    color: "#C71585",
+                                    color: "#009800",
                                 }
                             }
                         }, {
