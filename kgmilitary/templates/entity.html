@@ -109,7 +109,7 @@
                 var maxDisPlayNode = 25;
                 for (var i = 0; i < Math.min(maxDisPlayNode, entityRelation[0].length); i++) {
                     node = {};
-                    node['name'] = entityRelation[0][i]['entity2']['name'];
+                    node['name'] = entityRelation[0][i]['entity2']['名称'];
                     node['draggable'] = true;   //是否允许拖拽
                     //是否URL：区分类型
                     if ('url' in entityRelation[0][i]['entity2']) {
@@ -135,14 +135,14 @@
 
                     if (flag === 1) {
                         data.push(node);
-                        relation['value'] = entityRelation[0][i]['rel']['name'];
+                        relation['value'] = entityRelation[0][i]['rel']['名称'];
                         relation['symbolSize'] = 10;
                         links.push(relation);
                     } else {
                         maxDisPlayNode += 1;
                         for (var j = 0; j < links.length; j++) {
                             if (links[j]['target'] === relationTarget) {
-                                links[j]['value'] = links[j]['value'] + " | " + entityRelation[0][i]['rel']['name']
+                                links[j]['value'] = links[j]['value'] + " | " + entityRelation[0][i]['rel']['名称']
                                 break;
                             }
                         }
@@ -154,15 +154,15 @@
                 for (var i = 0; i < entityRelation[0].length; i++) {
                     relationData = {};
                     relationData['entity1'] = str;
-                    relationData['relation'] = entityRelation[0][i]['rel']['name'];
-                    relationData['entity2'] = entityRelation[0][i]['entity2']['name'];
+                    relationData['relation'] = entityRelation[0][i]['rel']['名称'];
+                    relationData['entity2'] = entityRelation[0][i]['entity2']['名称'];
                     tableData.push(relationData);
                 }
                 jQuery(function () {
                     $('.table').footable({
-                        "columns": [{"name": "entity1", title: "Entity1"},
-                            {"name": "relation", title: "Relation"},
-                            {"name": "entity2", title: "Entity2"}],
+                        "columns": [{"name": "entity1", title: "实体1"},
+                            {"name": "relation", title: "关系"},
+                            {"name": "entity2", title: "实体2"}],
                         "rows": tableData
                     });
                 });
@@ -209,14 +209,14 @@
                             name: 'Serise',
                             itemStyle: {
                                 normal: {
-                                    color: "#4592FF",
+                                    color: "#C71585",
                                 }
                             }
                         }, {
                             name: 'Instance',
                             itemStyle: {
                                 normal: {
-                                    color: "#C71585",
+                                    color: "#4592FF",
                                 }
                             }
                         }],
