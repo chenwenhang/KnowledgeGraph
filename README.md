@@ -13,9 +13,13 @@ KnowledgeGraph
 
 ## 文件结构
 
-  * Splider：网络爬虫
-  * kgmilitary：网站，可视化知识图谱
-  * nlp (building...): 知识抽取、融合等核心步骤
+```
+KnowledgeGraph
+├─graph.db.dump     // 数据库文件
+├─Splider           // 网络爬虫
+├─kgmilitary        // 网站，可视化知识图谱
+├─nlp (building...) // 知识抽取、融合等核心步骤
+```
 
 ## 系统截图
 
