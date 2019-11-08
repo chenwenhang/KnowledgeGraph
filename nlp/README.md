@@ -3,7 +3,7 @@
 * 来源：[军事新闻数据集](https://download.csdn.net/download/qq_36152012/10756072)
 
 * 数据集格式
-```JSON
+```
 {   
 	"article_id": 287071,  // 问题的数字ID  
 	"article_type": "防务快讯",  // 文章类型字符串   
