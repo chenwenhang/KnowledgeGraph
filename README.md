@@ -31,7 +31,7 @@ KnowledgeGraph
 ![UTOOLS1573302503304.png](https://echo-picture.oss-cn-beijing.aliyuncs.com/UTOOLS1573302503304.png)
 
 #### 关系查询
-![UTOOLS1573302490911.png](https://echo-picture.oss-cn-beijing.aliyuncs.com/UTOOLS1573302490911.png)
+![UTOOLS1573563258932.png](https://echo-picture.oss-cn-beijing.aliyuncs.com/UTOOLS1573563258932.png)
 
 
 ## 声明
