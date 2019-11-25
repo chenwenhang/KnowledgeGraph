@@ -24,7 +24,8 @@ from . import relation_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', index_view.index),
-    url(r'^ner-post',ner_view.ner_post),
+    url(r'^ner-post', ner_view.ner_post),
     url(r'^search_entity', relation_view.search_entity),
-    url(r'^search_relation',relation_view.search_relation),
+    url(r'^search_relation', relation_view.search_relation),
+    url(r'^search_question', relation_view.search_question),
 ]

@@ -1,0 +1,233 @@
+{% extends "navigate.html" %} {% block mainbody %}
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title></title>
+        <meta charset="utf-8"/>
+        <script src="/static/js/echarts.common.min.js"></script>
+        <script src="/static/js/echarts.min.js"></script>
+    </head>
+    <title>实体查询</title>
+    <div class="container">
+        <div class="row">
+            <!--head start-->
+            <div class="col-md-12">
+                <h3 class="page-header"><i class="fa fa-question" aria-hidden="true"></i> 知识问答 </h3>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="\">主页</a></li>
+                    <li><i class="fa fa-question" aria-hidden="true"></i>知识问答</li>
+                </ol>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default ">
+                    <header class="panel-heading">
+                        输入问题：
+                    </header>
+                    <div class="panel-body">
+                        <!--搜索框-->
+                        <form method="get" id='searchQuestionForm'>
+                            <div>
+                                <div class="input-group">
+                                    <input type="text" id="user_text" name="user_text" class="form-control"
+                                           placeholder="输入问题" aria-describedby="basic-addon1">
+                                    <span class="btn btn-primary input-group-addon" type="button"
+                                          id="relationSearchButton" style="background-color:#4592fe ; padding:6px 38px"
+                                          onclick="document.getElementById('searchQuestionForm').submit();">查询</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-12">
+                {% if ctx %}
+                    <div class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-body">
+                                <h2>暂未找到答案</h2>
+                            </div>
+                        </header>
+                    </div>
+                {% endif %}
+                {% if ret %}
+                    <!-- Echart Dom对象（实体关系） -->
+                    <div class="col-md-12">
+                        <div class="panel panel-default ">
+                            <header class="panel-heading">
+                                图谱演示 :
+                            </header>
+                            <div class="panel-body ">
+                                <div id="graph" style="width: 100%;height:600px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <header class="panel-heading">
+                                答案 :
+                            </header>
+                            <div class="panel-body">
+                                <table class="table" data-paging="true" data-sorting="true"></table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if entityRelation %}
+        <script src="/static/js/jquery.min.js"></script>
+        <script type="text/javascript">
+            // 基于查询结果：初始化Data和Links列表，用于Echarts可视化输出
+            var ctx = [{{ ctx|safe }}];
+            var entityRelation = [{{ entityRelation|safe }}];
+            var entity = entityRelation[0][0].entity1;
+            var data = [];
+            var links = [];
+            if (ctx.length == 0) {
+                var node = {};
+                var url = decodeURI(location.search);
+                var str = "";
+                if (url.indexOf("?") != -1) {
+                    str = url.split("=")[1]
+                }
+                //实体1：待查询的对象
+                node['name'] = str;
+                node['draggable'] = true;
+                var id = 0;
+                node['id'] = id.toString();
+                node['category'] = 1;
+                data.push(node);
+
+                //实体2：查询并转储到data中，取二者较小的值
+                var maxDisPlayNode = 25;
+                var id = 1;
+                Object.keys(entity).forEach(function (key) {
+                    // console.log(key,entity[key]);
+                    node = {};
+                    node['name'] = entity[key];
+                    node['draggable'] = true;   //是否允许拖拽
+                    node['category'] = 2;
+                    node['id'] = id.toString();
+                    data.push(node);
+                    relation = {};
+                    relation['source'] = 0;
+                    relation['target'] = id.toString();
+                    relation['category'] = 0;
+                    relation['value'] = key;
+                    relation['symbolSize'] = 10;
+                    links.push(relation);
+                    id++;
+                });
+                //基于表格的展示++
+                tableData = [];
+                Object.keys(entity).forEach(function (key) {
+                    relationData = {};
+                    relationData['entity1'] = str;
+                    relationData['relation'] = key;
+                    relationData['entity2'] = entity[key];
+                    tableData.push(relationData);
+                });
+                jQuery(function () {
+                    $('.table').footable({
+                        "columns": [{"name": "entity1", title: "实体"},
+                            {"name": "relation", title: "属性"},
+                            {"name": "entity2", title: "值"}],
+                        "rows": tableData
+                    });
+                });
+                //基于表格的展示--
+            }
+            // 基于准备好的数据：Data和Links，设置Echarts参数
+            var myChart = echarts.init(document.getElementById('graph'));
+            option = {
+                title: {
+                    text: ''
+                },//标题
+                tooltip: {},//提示框配置
+                animation: false,
+                animationDurationUpdate: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                    }
+                },//节点上的标签
+                legend: {
+                    x: "center",
+                    show: false
+                },
+                series: [
+                    {
+                        type: 'graph',//系列：
+                        layout: 'force',
+                        symbolSize: 45,
+                        focusNodeAdjacency: true,
+                        roam: true,
+                        edgeSymbol: ['none', 'arrow'],
+                        categories: [{
+                            name: 'Bank',
+                            itemStyle: {
+                                normal: {
+                                    color: "#C71585",
+                                }
+                            }
+                        }, {
+                            name: 'Serise',
+                            itemStyle: {
+                                normal: {
+                                    color: "#009800",
+                                }
+                            }
+                        }, {
+                            name: 'Instance',
+                            itemStyle: {
+                                normal: {
+                                    color: "#4592FF",
+                                }
+                            }
+                        }],
+                        label: {
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: 12,
+                                },
+                            }
+                        },               //节点标签样式
+                        force: {
+                            repulsion: 1000
+                        },
+                        edgeSymbolSize: [4, 50],
+                        edgeLabel: {
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: 10
+                                },
+                                formatter: "{c}"
+                            }
+                        },           //边标签样式
+                        data: data,                 //节点
+                        links: links,               //节点间的关系
+                        lineStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                width: 1.3,
+                                curveness: 0,
+                                color: "#262626"
+                            }
+                        }            // 连接线的风格
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        </script>
+    {% endif %}
+
+{% endblock %}

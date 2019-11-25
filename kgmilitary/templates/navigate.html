@@ -54,6 +54,7 @@
                         <li><a href="/">实体识别</a></li>
                         <li><a href="/search_entity">实体查询</a></li>
                         <li><a href="/search_relation">关系查询</a></li>
+                        <li><a href="/search_question">知识问答</a></li>
 
                     </ul>
                 </div>
@@ -145,6 +146,9 @@
             break;
         case "/search_relation":
             $(".header-navbar li:eq(2)").addClass("active");
+            break;
+        case "/search_question":
+            $(".header-navbar li:eq(3)").addClass("active");
             break;
     }
 

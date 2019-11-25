@@ -2,11 +2,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from toolkit.pre_load import neo4jconn
+from toolkit.pre_load import thuFactory
 from django.http import JsonResponse
 import os
-
+import sys
 import json
 
+thu_lac = thuFactory
 relationCountDict = {}
 filePath = os.path.abspath(os.path.join(os.getcwd(), "."))
 
@@ -113,3 +115,25 @@ def search_relation(request):
         return render(request, 'relation.html', {'ctx': ctx})
 
     return render(request, 'relation.html', {'ctx': ctx})
+
+
+# 实体查询
+def search_question(request):
+    ctx = {}
+    # 根据传入的实体名称搜索出关系
+    if request.GET:
+        question = request.GET['user_text']
+        cut_statement = thu_lac.cut(question, text=False)
+        # 连接数据库
+        db = neo4jconn
+        entityRelation = db.matchEntityItem(question)
+        # entityRelation = db.getEntityRelationbyEntity(entity)
+        if len(entityRelation) == 0:
+            # 若数据库中无法找到该实体，则返回数据库中无该实体
+            ctx = {'title': '<h2>数据库中暂未添加该实体</h1>'}
+            return render(request, 'entity.html', {'ctx': json.dumps(ctx, ensure_ascii=False)})
+        else:
+            return render(request, 'entity.html',
+                          {'ret': json.dumps(entityRelation, ensure_ascii=False)})
+    # 需要进行类型转换
+    return render(request, 'question.html', {'ctx': ctx, 'ret': ctx})
