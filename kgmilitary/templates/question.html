@@ -51,31 +51,57 @@
                         </header>
                     </div>
                 {% endif %}
-                {% if ret %}
-                    <!-- Echart Dom对象（实体关系） -->
-                    <div class="col-md-12">
-                        <div class="panel panel-default ">
-                            <header class="panel-heading">
-                                图谱演示 :
-                            </header>
-                            <div class="panel-body ">
-                                <div id="graph" style="width: 100%;height:600px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <header class="panel-heading">
-                                答案 :
-                            </header>
-                            <div class="panel-body">
-                                <table class="table" data-paging="true" data-sorting="true"></table>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
             </div>
+            {% if entityRelation %}
+                <!-- Echart Dom对象（实体关系） -->
+                <div class="col-md-12">
+                    <div class="panel panel-default ">
+                        <header class="panel-heading">
+                            图谱演示 :
+                        </header>
+                        <div class="panel-body ">
+                            <div id="graph" style="width: 100%;height:600px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <header class="panel-heading">
+                            答案 :
+                        </header>
+                        <div class="panel-body">
+                            <table class="table" data-paging="true" data-sorting="true"></table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if searchResult %}
+
+                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                <div class="col-md-12">
+                    <div class="panel panel-default ">
+                        <header class="panel-heading">
+                            关系图 :
+                        </header>
+                        <div class="panel-body ">
+                            <div id="graph" style="width: 100%;height:600px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footable -->
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <header class="panel-heading">
+                            关系列表 :
+                        </header>
+                        <div class="panel-body">
+                            <table class="table" data-paging="true" data-sorting="true"></table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
+    </div>
     </div>
     {% if entityRelation %}
         <script src="/static/js/jquery.min.js"></script>
@@ -94,7 +120,7 @@
                     str = url.split("=")[1]
                 }
                 //实体1：待查询的对象
-                node['name'] = str;
+                node['name'] = entity["名称"];
                 node['draggable'] = true;
                 var id = 0;
                 node['id'] = id.toString();
@@ -125,7 +151,7 @@
                 tableData = [];
                 Object.keys(entity).forEach(function (key) {
                     relationData = {};
-                    relationData['entity1'] = str;
+                    relationData['entity1'] = entity["名称"];
                     relationData['relation'] = key;
                     relationData['entity2'] = entity[key];
                     tableData.push(relationData);
@@ -229,5 +255,4 @@
             myChart.setOption(option);
         </script>
     {% endif %}
-
 {% endblock %}

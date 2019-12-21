@@ -7,6 +7,7 @@ from django.http import JsonResponse
 import os
 import sys
 import json
+import re
 
 thu_lac = thuFactory
 relationCountDict = {}
@@ -117,23 +118,43 @@ def search_relation(request):
     return render(request, 'relation.html', {'ctx': ctx})
 
 
-# 实体查询
+# 问题查询
 def search_question(request):
     ctx = {}
     # 根据传入的实体名称搜索出关系
     if request.GET:
         question = request.GET['user_text']
         cut_statement = thu_lac.cut(question, text=False)
+
         # 连接数据库
         db = neo4jconn
-        entityRelation = db.matchEntityItem(question)
+        entityRelation = None
+
+        parameter = []
+        for i in range(len(cut_statement)):
+            if cut_statement[i][1] == "uw":
+                parameter.append(cut_statement[i][0])
+        if len(parameter) == 1:
+            entityRelation = db.matchEntityItem(parameter[0])
+        elif len(parameter) == 2:
+            entityRelation = db.matchEntityItem(parameter[0])
+            for key in list(entityRelation[0]["entity1"]):
+                if key != "名称" and key != parameter[1]:
+                    entityRelation[0]["entity1"].pop(key)
+            # print(entityRelation[0]["entity1"])
+        else:
+            entityRelation = db.matchEntityItem(parameter[0])
+
         # entityRelation = db.getEntityRelationbyEntity(entity)
         if len(entityRelation) == 0:
             # 若数据库中无法找到该实体，则返回数据库中无该实体
             ctx = {'title': '<h2>数据库中暂未添加该实体</h1>'}
-            return render(request, 'entity.html', {'ctx': json.dumps(ctx, ensure_ascii=False)})
-        else:
-            return render(request, 'entity.html',
-                          {'ret': json.dumps(entityRelation, ensure_ascii=False)})
+            return render(request, 'question.html', {'ctx': json.dumps(ctx, ensure_ascii=False)})
+        elif len(parameter) == 1:
+            return render(request, 'question.html',
+                          {'entityRelation': json.dumps(entityRelation, ensure_ascii=False)})
+        elif len(parameter) == 2:
+            return render(request, 'question.html',
+                          {'entityRelation': json.dumps(entityRelation, ensure_ascii=False)})
     # 需要进行类型转换
-    return render(request, 'question.html', {'ctx': ctx, 'ret': ctx})
+    return render(request, 'question.html', {'ctx': ctx, 'entityRelation': ctx})

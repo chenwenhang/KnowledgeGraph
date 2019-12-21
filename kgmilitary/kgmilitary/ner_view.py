@@ -22,6 +22,7 @@ def ner_post(request):
         text = ""
         # 命名实体识别
         ner_list = get_ner(key)
+        # print(ner_list)
 
         # 遍历输出
         for pair in ner_list:
