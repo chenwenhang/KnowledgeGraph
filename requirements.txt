@@ -1,4 +1,4 @@
-﻿Django==2.2.13
+﻿Django==2.2.22
 neo4j-driver==1.7.5
 py2neo==4.3.0
 requests-html==0.10.0
